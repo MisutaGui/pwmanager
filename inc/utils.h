@@ -24,4 +24,19 @@ int check_username_validity(char* username);
  */
 int check_email_validity(char* email);
 
+/*
+ * Returns 0 if all the characters of the given string is a mix 
+ * of letters, capitalized or not, and numbers.
+ * Returns -1 otherwise.
+ */
+int is_alphanumeric(char* string);
+
+/*
+ * Checks that the given label is of the right format.
+ * A label is valid if it is less than 100 characters long and is 
+ * alphanumeric.
+ * Returns 0 on success, -1 on error.
+ */
+int check_label_validity(char* label);
+
 #endif /* UTILS_H */
