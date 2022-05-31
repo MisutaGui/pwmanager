@@ -1,0 +1,2 @@
+private : openssl genrsa -out key.pem 2048
+public : openssl rsa -in key.pem -outform PEM -pubout -out public.pem
