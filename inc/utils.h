@@ -9,6 +9,10 @@
 #define INFO_OPECODE 12
 #define DELE_OPECODE 13
 
+#define LABEL_MAX_LEN 100
+#define USERNAME_MAX_LEN 50
+#define EMAIL_MAX_LEN 60
+
 /*
  * Checks that the given username is of the right format.
  * A username is less than 50 characters long.
@@ -18,7 +22,7 @@ int check_username_validity(char* username);
 
 /*
  * Checks that the given email is of the right format.
- * An email is valid if it contains the character '@' and is less than 50 
+ * An email is valid if it contains the character '@' and is less than 60 
  * characters long.
  * Returns 0 on success, -1 on error.
  */

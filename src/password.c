@@ -13,10 +13,10 @@ int get_password(struct password *pwd){
 		return -1;
 	}
 
-	memset(pwd->pwd_s, '\0', PASSWORD_MAX_LEN);
+	memset(pwd->pwd_s, '\0', PASSWORD_LEN + 1);
 	
 	srand(time(NULL));
-	for (i = 0; i < PASSWORD_MAX_LEN; i++) {
+	for (i = 0; i < PASSWORD_LEN; i++) {
 		pwd->pwd_s[i] = (rand() % (126 - 33 + 1)) + 33;
 	}
 	

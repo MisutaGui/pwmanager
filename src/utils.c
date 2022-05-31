@@ -6,14 +6,14 @@
  * Returns 0 on success, -1 on error.
  */
 int check_username_validity(char* username){
-	if (username == NULL || strlen(username) > 50)
+	if (username == NULL || strlen(username) > USERNAME_MAX_LEN)
 		return -1;
 	return 0;
 }
 
 /*
  * Checks that the given email is of the right format.
- * An email is valid if it contains the character '@' and is less than 50 
+ * An email is valid if it contains the character '@' and is less than 60 
  * characters long.
  * Returns 0 on success, -1 on error.
  */
@@ -21,7 +21,7 @@ int check_email_validity(char* email){
 	int i;
 	int len;
 
-	if (email == NULL || strlen(email) > 60)
+	if (email == NULL || strlen(email) > EMAIL_MAX_LEN)
 		return -1;
 
 	len = strlen(email);
@@ -65,7 +65,7 @@ int is_alphanumeric(char* string){
  * Returns 0 on success, -1 on error.
  */
 int check_label_validity(char* label){
-	if (label == NULL || strlen(label) > 100)
+	if (label == NULL || strlen(label) > LABEL_MAX_LEN)
 		return -1;
 
 	return is_alphanumeric(label);
