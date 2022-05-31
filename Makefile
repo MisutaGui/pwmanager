@@ -3,7 +3,7 @@ CFLAGS=-Wall
 SRC=./src/
 INC=./inc/
 
-SOURCES=password.c security.c utils.c account.c
+SOURCES=password.c security.c utils.c account.c main.c
 OBJECTS=$(SOURCES:.c=.o)
 
 all: pwman
@@ -17,3 +17,4 @@ pwman: $(OBJECTS)
 clean:
 	find . -name "*~" -delete
 	find . -name "*.o" -delete
+	rm pwman
