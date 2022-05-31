@@ -21,10 +21,12 @@ int main(int argc, char **argv){
 	int         operation;
 	char*       email;
 	char*       username;
+	char*       label;
 	const char* optstring;	
 
 	email     = "default";
 	username  = "default";
+	label     = "default";
 	optstring = "hld:i:c:u:e:";
 	operation = LIST_OPECODE;
 	errno     = 0;
@@ -37,12 +39,27 @@ int main(int argc, char **argv){
 			break;
 		case 'd':
 			operation = DELE_OPECODE;
+			if (check_label_validity(optarg) < 0) {
+				fprintf(stderr, "Provided label is not valid\n");
+				goto error;
+			}
+			label = optarg;
 			break;
 		case 'i':
 			operation = INFO_OPECODE;
+			if (check_label_validity(optarg) < 0) {
+				fprintf(stderr, "Provided label is not valid\n");
+				goto error;
+			}
+			label = optarg;
 			break;
 		case 'c':
 			operation = CREA_OPECODE;
+			if (check_label_validity(optarg) < 0) {
+				fprintf(stderr, "Provided label is not valid\n");
+				goto error;
+			}
+			label = optarg;
 			break;
 		case 'u':
 			if (check_username_validity(optarg) < 0) {
