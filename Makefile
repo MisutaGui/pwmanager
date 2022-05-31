@@ -3,14 +3,17 @@ CFLAGS=-Wall
 SRC=./src/
 INC=./inc/
 
-pwman:
-	echo todo
+SOURCES=password.c security.c utils.c account.c
+OBJECTS=$(SOURCES:.c=.o)
 
-mem: pwman
-	echo todo
+all: pwman
+
+pwman: $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o: $(SRC)%.c
+	$(CC) $(CFLAGS) -I $(INC) -o $@ -c $<
 
 clean:
 	find . -name "*~" -delete
 	find . -name "*.o" -delete
-
-
