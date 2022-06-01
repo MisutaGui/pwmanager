@@ -3,6 +3,10 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <errno.h>
 
 #define LIST_OPECODE 10
 #define CREA_OPECODE 11
@@ -12,6 +16,8 @@
 #define LABEL_MAX_LEN 100
 #define USERNAME_MAX_LEN 50
 #define EMAIL_MAX_LEN 60
+
+#define ACC_FOLDER_PATH "/.pwman/.acc"
 
 /*
  * Checks that the given username is of the right format.
@@ -48,5 +54,11 @@ int check_label_validity(char* label);
  * Returns NULL on error.
  */
 char* concat_strings(char* str1, char* str2);
+
+/* 
+ * Lists the label of all accounts.
+ * Returns 0 on succress, -1 on error.
+ */
+int list_accounts(char* path);
 
 #endif /* UTILS_H */
