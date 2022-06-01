@@ -94,3 +94,48 @@ char* concat_strings(char* str1, char* str2){
 
 	return buf;
 }
+
+/* 
+ * Lists the label of all accounts.
+ * Returns 0 on succress, -1 on error.
+ */
+int list_accounts(char* path){
+	DIR* dir;
+	char* name;
+	struct dirent* entry;
+
+	if (path == NULL)
+		return -1;
+
+	dir = opendir(path);
+	if (dir == NULL) {
+		perror("opendir");
+		goto error;
+	}
+
+	errno = 0;
+	
+	printf("Your accounts : \n");
+
+	while ((entry = readdir(dir)) != NULL) {
+		name = entry->d_name;
+		if (strcmp(name, ".") != 0 && strcmp(name, "..") != 0)
+			printf("-> %s\n", name);
+	}
+
+	if (errno != 0) {
+		perror("readdir");
+		goto error;
+	}
+
+	if (closedir(dir) < 0) {
+		perror("closedir");
+		goto error;
+	}
+
+	return 0;
+
+ error:
+	closedir(dir);
+	return -1;
+}

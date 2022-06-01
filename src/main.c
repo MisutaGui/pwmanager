@@ -22,16 +22,20 @@ int main(int argc, char **argv){
 	char*       email;
 	char*       username;
 	char*       label;
-	const char* optstring;	
+	char*       path;
+	char*       home_dir_path;
+	const char* optstring;
 
-	email     = "default";
-	username  = "default";
-	label     = "default";
-	optstring = "hld:i:c:u:e:";
-	operation = LIST_OPECODE;
-	errno     = 0;
+	email         = "default";
+	username      = "default";
+	label         = "default";
+	optstring     = "hld:i:c:u:e:";
+	path          = NULL;
+	home_dir_path = NULL;
+	operation     = LIST_OPECODE;
+	errno         = 0;
 
-
+	/* Parsing command line arguments */
 	while ((opt = getopt(argc, argv, optstring)) != -1) {
 		switch (opt) {
 		case 'l':
@@ -84,8 +88,44 @@ int main(int argc, char **argv){
 		}
 	}
 
+	/* Build path to accounts folder */
+	home_dir_path = getenv("HOME");
+	if (home_dir_path == NULL) {
+		perror("getenv");
+		goto error;
+	}
+
+	path = concat_strings(home_dir_path, ACC_FOLDER_PATH);
+	if (path == NULL) {
+		fprintf(stderr, "Could not build path\n");
+		goto error;
+	}
+
+	/* Treating operation */
+	switch (operation) {
+	case LIST_OPECODE:
+		if (list_accounts(path) < 0)
+			goto error;
+		break;
+	case DELE_OPECODE:
+		fprintf(stderr, "TODO\n");
+		break;
+	case INFO_OPECODE:
+		fprintf(stderr, "TODO\n");
+		break;
+	case CREA_OPECODE:
+		fprintf(stderr, "TODO\n");
+		break;
+	default:
+		fprintf(stderr, "Unknown operation code [%d]\n", operation);
+		goto error;
+	}
+
+	free(path);
+
 	return 0;
 
  error:
+	free(path);
 	exit(EXIT_FAILURE);
 }
