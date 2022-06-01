@@ -21,6 +21,7 @@ Usage: pwman -l       -> list all labels\n\
 int main(int argc, char **argv){
 	int         opt;
 	int         operation;
+	int         bool;
 	char*       email;
 	char*       username;
 	char*       label;
