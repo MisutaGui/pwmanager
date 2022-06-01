@@ -70,3 +70,27 @@ int check_label_validity(char* label){
 
 	return is_alphanumeric(label);
 }
+
+/*
+ * Concatenates str1 with str2 in a newly allocated buffer and returns it.
+ * Returns NULL on error.
+ */
+char* concat_strings(char* str1, char* str2){
+	char* buf;
+
+	if (str1 == NULL || str2 == NULL)
+		return NULL;
+
+	buf = malloc(strlen(str1) + strlen(str2) + 1);
+	if (buf == NULL) {
+		perror("malloc");
+		return NULL;
+	}
+
+	memset(buf, '\0', strlen(str1) + strlen(str2) + 1);
+
+	strcpy(buf, str1);
+	strcat(buf, str2);
+
+	return buf;
+}
