@@ -43,4 +43,10 @@ int is_alphanumeric(char* string);
  */
 int check_label_validity(char* label);
 
+/*
+ * Concatenates str1 with str2 in a newly allocated buffer and returns it.
+ * Returns NULL on error.
+ */
+char* concat_strings(char* str1, char* str2);
+
 #endif /* UTILS_H */
