@@ -160,14 +160,45 @@ int check_label_existence(char* label, char* path){
 	errno = 0;
 
 	while ((entry = readdir(dir)) != NULL) {
-		if (strcmp(label, entry->d_name) == 0)
+		if (strcmp(label, entry->d_name) == 0) {
+			closedir(dir);
 			return 1;
+		}
 	}
 
 	if (errno != 0) {
 		perror("readdir");
+		closedir(dir);
+		return -1;
+	}
+
+	if (closedir(dir) < 0) {
+		perror("closedir");
 		return -1;
 	}
 
 	return 0;
+}
+
+/*
+ * Writes count bytes of buf in the file descriptor fd.
+ * Returns -1 on error, the number of bytes written otherwise.
+ */
+ssize_t writeAll(int fd, char* buf, size_t count){
+	ssize_t bwt;
+	ssize_t bw;
+
+	bwt = 0;
+	bw = 0;
+	while (bwt < count) {
+		bw = write(fd, buf + bwt, count - bwt);
+		if (bw < 0) {
+			perror("write");
+			return -1;
+		}
+
+		bwt += bw;
+	}
+
+	return (bwt == count) ? bwt : -1;
 }
