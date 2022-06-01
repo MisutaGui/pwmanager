@@ -62,4 +62,10 @@ char* concat_strings(char* str1, char* str2);
  */
 int list_accounts(char* path);
 
+/*
+ * Checks that the given label is an entry of the directory specified in path.
+ * Returns 1 if it exists, 0 it if does not, -1 on error.
+ */
+int check_label_existence(char* label, char* path);
+
 #endif /* UTILS_H */

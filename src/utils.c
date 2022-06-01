@@ -139,3 +139,35 @@ int list_accounts(char* path){
 	closedir(dir);
 	return -1;
 }
+
+/*
+ * Checks that the given label is an entry of the directory specified in path.
+ * Returns 1 if it exists, 0 it if does not, -1 on error.
+ */
+int check_label_existence(char* label, char* path){
+	DIR* dir;
+	struct dirent* entry;
+
+	if (label == NULL || path == NULL)
+		return -1;
+
+	dir = opendir(path);
+	if (dir == NULL) {
+		perror("opendir");
+		return -1;
+	}
+
+	errno = 0;
+
+	while ((entry = readdir(dir)) != NULL) {
+		if (strcmp(label, entry->d_name) == 0)
+			return 1;
+	}
+
+	if (errno != 0) {
+		perror("readdir");
+		return -1;
+	}
+
+	return 0;
+}
