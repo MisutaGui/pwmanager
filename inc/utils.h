@@ -12,6 +12,7 @@
 #define CREA_OPECODE 11
 #define INFO_OPECODE 12
 #define DELE_OPECODE 13
+#define GETP_OPECODE 14
 
 #define LABEL_MAX_LEN 100
 #define USERNAME_MAX_LEN 50

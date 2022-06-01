@@ -10,6 +10,8 @@ Usage: pwman -l       -> list all labels\n\
    or: pwman -d LABEL -> deletes the account labeled LABEL\n\
    or: pwman -i LABEL -> Asks for all information (except the password) about\n\
                          the account with the label LABEL\n\
+   or: pwman -g LABEL -> Displays the password on standard output of the\n\
+                         account labeled LABEL\n\
    or: pwman -c LABEL [-u USERNAME] [-e EMAIL]\n\
                       -> Creates a new account labeled LABEL. The default\n\
                          value for USERNAME and EMAIL is \"default\"\n\
@@ -29,7 +31,7 @@ int main(int argc, char **argv){
 	email         = "default";
 	username      = "default";
 	label         = "default";
-	optstring     = "hld:i:c:u:e:";
+	optstring     = "hld:i:c:g:u:e:";
 	path          = NULL;
 	home_dir_path = NULL;
 	operation     = LIST_OPECODE;
@@ -65,6 +67,13 @@ int main(int argc, char **argv){
 			}
 			label = optarg;
 			break;
+		case 'g':
+			operation = GETP_OPECODE;
+			if (check_label_validity(optarg) < 0) {
+				fprintf(stderr, "Provided label is not valid\n");
+				goto error;
+			}
+			label = optarg;
 		case 'u':
 			if (check_username_validity(optarg) < 0) {
 				fprintf(stderr, "Provided username is not valid\n");
@@ -114,6 +123,9 @@ int main(int argc, char **argv){
 		fprintf(stderr, "TODO\n");
 		break;
 	case CREA_OPECODE:
+		fprintf(stderr, "TODO\n");
+		break;
+	case GETP_OPECODE:
 		fprintf(stderr, "TODO\n");
 		break;
 	default:
