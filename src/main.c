@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "utils.h"
+#include "account.h"
 
 const char usage[] = "\
 Usage: pwman -l       -> list all labels\n\
@@ -13,15 +14,15 @@ Usage: pwman -l       -> list all labels\n\
    or: pwman -g LABEL -> Displays the password on standard output of the\n\
                          account labeled LABEL\n\
    or: pwman -c LABEL [-u USERNAME] [-e EMAIL]\n\
-                      -> Creates a new account labeled LABEL. The default\n\
-                         value for USERNAME and EMAIL is \"default\"\n\
+                      -> Creates a new account labeled LABEL. If no \n\
+                         value for USERNAME and EMAIL is provided, a default\n\
+                         value will be stored\n\
    or: pwman -h       -> displays this message\n\
 ";
 
 int main(int argc, char **argv){
 	int         opt;
 	int         operation;
-	int         bool;
 	char*       email;
 	char*       username;
 	char*       label;
@@ -29,7 +30,7 @@ int main(int argc, char **argv){
 	char*       home_dir_path;
 	const char* optstring;
 
-	email         = "default";
+	email         = "default@default";
 	username      = "default";
 	label         = "default";
 	optstring     = "hld:i:c:g:u:e:";
@@ -114,17 +115,25 @@ int main(int argc, char **argv){
 	/* Treating operation */
 	switch (operation) {
 	case LIST_OPECODE:
-		if (list_accounts(path) < 0)
+		if (list_accounts(path) < 0) {
+			fprintf(stderr, "Failed to list accounts\n");
 			goto error;
+		}
 		break;
 	case DELE_OPECODE:
-		fprintf(stderr, "TODO\n");
+		if (delete_account(label, path) < 0) {
+			fprintf(stderr, "Failed to delete account\n");
+			goto error;
+		}
 		break;
 	case INFO_OPECODE:
 		fprintf(stderr, "TODO\n");
 		break;
 	case CREA_OPECODE:
-		fprintf(stderr, "TODO\n");
+		if (register_account(label, username, email, path) < 0) {
+			fprintf(stderr, "Failed to create account\n");
+			goto error;
+		}
 		break;
 	case GETP_OPECODE:
 		fprintf(stderr, "TODO\n");

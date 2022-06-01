@@ -6,25 +6,21 @@
 #include <stdio.h>
 
 /*
- * Encrypts the content of plaintext and stores the encrypted data in 
- * encrypted_text. The argument len contains the length of the plain text.
+ * Encrypts the content of plaintext and returns the encrypted data.
  * Note that this function is ABSOLUTELY NOT SECURE as it uses Caesar's cipher
  * algorithm, which is as vulnerable as simple. This algorithm might be changed
  * in the future.
- * Returns the length of the encrypted_text on success, -1 on error.
- * Don't forget to free encrypted_text allocated memory when no longer used.
+ * Returns a pointer to the encrypted text on success, NULL on error.
  */
-int encrypt(char* plaintext, int len, char* encrypted_text);
+char* encrypt(char* plaintext, int len);
 
 /*
- * Decrypts the content of encrypted_text and stores the decrypted data in 
- * plaintext. The argument len contains the length of the encrypted text.
+ * Decrypts the content of encrypted_text and returns the decrypted data
  * Note that this function is ABSOLUTELY NOT SECURE as it uses Caesar's cipher
  * algorithm, which is as vulnerable as simple. This algorithm might be changed
  * in the future.
- * Returns the length of the plaintext on success, -1 on error.
- * Don't forget to free plaintext allocated memory when no longer used.
+ * Returns a pointer to the plain text on success, NULL on error.
  */
-int decrypt(char* encrypted_text, int len, char* plaintext);
-
+char* decrypt(char* encrypted_text, int len);
+	
 #endif /* SECURITY_H  */

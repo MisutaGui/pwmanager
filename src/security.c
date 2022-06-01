@@ -1,23 +1,23 @@
 #include "security.h"
 
 /*
- * Encrypts the content of plaintext and stores the encrypted data in 
- * encrypted_text.
+ * Encrypts the content of plaintext and returns the encrypted data.
  * Note that this function is ABSOLUTELY NOT SECURE as it uses Caesar's cipher
  * algorithm, which is as vulnerable as simple. This algorithm might be changed
  * in the future.
- * Returns the length of the encrypted_text on success, -1 on error.
+ * Returns a pointer to the encrypted text on success, NULL on error.
  */
-int encrypt(char* plaintext, int len, char* encrypted_text){
+char* encrypt(char* plaintext, int len){
 	int i;
+	char* encrypted_text;
 
 	if (plaintext == NULL || len < 0)
-		return -1;
+		return NULL;
 
 	encrypted_text = malloc(len + 1); /* null byte */
 	if (encrypted_text == NULL) {
 		perror("malloc");
-		return -1;
+		return NULL;
 	}
 
 	memset(encrypted_text, '\0', len + 1);
@@ -26,28 +26,28 @@ int encrypt(char* plaintext, int len, char* encrypted_text){
 		encrypted_text[i] = plaintext[i] + 3; /* Caesar's cipher */
 	}
 
-	return len;
+	return encrypted_text;
 }
 
 
 /*
- * Decrypts the content of encrypted_text and stores the decrypted data in 
- * plaintext.
+ * Decrypts the content of encrypted_text and returns the decrypted data
  * Note that this function is ABSOLUTELY NOT SECURE as it uses Caesar's cipher
  * algorithm, which is as vulnerable as simple. This algorithm might be changed
  * in the future.
- * Returns the length of the plaintext on success, -1 on error.
+ * Returns a pointer to the plain text on success, NULL on error.
  */
-int decrypt(char* encrypted_text, int len, char* plaintext){
+char* decrypt(char* encrypted_text, int len){
 	int i;
+	char* plaintext;
 
 	if (encrypted_text == NULL || len < 0)
-		return -1;
+		return NULL;
 
 	plaintext = malloc(len + 1); /* null byte */
 	if (plaintext == NULL) {
 		perror("malloc");
-		return -1;
+		return NULL;
 	}
 
 	memset(plaintext, '\0', len + 1);
@@ -56,6 +56,6 @@ int decrypt(char* encrypted_text, int len, char* plaintext){
 		plaintext[i] = encrypted_text[i] - 3; /* Caesar's cipher */
 	}
 
-	return len;
+	return plaintext;
 }
 	

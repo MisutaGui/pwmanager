@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
+#include <unistd.h>
 
 #define LIST_OPECODE 10
 #define CREA_OPECODE 11
@@ -67,5 +68,11 @@ int list_accounts(char* path);
  * Returns 1 if it exists, 0 it if does not, -1 on error.
  */
 int check_label_existence(char* label, char* path);
+
+/*
+ * Writes count bytes of buf in the file descriptor fd.
+ * Returns -1 on error, the number of bytes written otherwise.
+ */
+ssize_t writeAll(int fd, char* buf, size_t count);
 
 #endif /* UTILS_H */
