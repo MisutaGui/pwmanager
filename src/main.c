@@ -136,7 +136,10 @@ int main(int argc, char **argv){
 		}
 		break;
 	case GETP_OPECODE:
-		fprintf(stderr, "TODO\n");
+		if (display_pwd_account(label, path) < 0) {
+			fprintf(stderr, "Failed to get account's password\n");
+			goto error;
+		}
 		break;
 	default:
 		fprintf(stderr, "Unknown operation code [%d]\n", operation);

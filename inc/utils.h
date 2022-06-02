@@ -75,4 +75,38 @@ int check_label_existence(char* label, char* path);
  */
 ssize_t writeAll(int fd, char* buf, size_t count);
 
+/*
+ * Reads count bytes from fd and stores them in buf.
+ * Returns -1 on error, the number of bytes read otherwise.
+ */
+ssize_t readAll(int fd, char* buf, size_t count);
+
+/*
+ * Writes the separator s in the opened file descriptor fd.
+ * Retunrs 0 on success, -1 on error.
+ */
+int write_sep(int fd, char s);
+
+/*
+ * Splits the content pointed by str (which is null terminated)
+ * each time the character sep is encountered.
+ * Returns an array of strings that were in between the separators on success,
+ * NULL on error.
+ */
+char** split_on_sep(char* str, char sep);
+
+/*
+ * Ensures that the buffer **BUF that points to *N bytes of memory has enough
+ * space to add *TO_ADD bytes of data. If not, it reallocs memory in order to do
+ * so. Returns 0 on success, -1 on error.
+ */
+int ensure_capacity(char** buf, int* len, int* size, int len_add);
+
+/*
+ * Concats the content of data to buf and updates len and size as needed.
+ * data must be NULL-terminated.
+ * Returns 0 on success, -1 on error.
+ */
+int add_bytes_to_buf(char** buf, int* len, int* size, char* data);
+
 #endif /* UTILS_H */
