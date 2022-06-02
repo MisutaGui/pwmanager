@@ -202,3 +202,142 @@ ssize_t writeAll(int fd, char* buf, size_t count){
 
 	return (bwt == count) ? bwt : -1;
 }
+
+/*
+ * Reads count bytes from fd and stores them in buf.
+ * Returns -1 on error, the number of bytes read otherwise.
+ */
+ssize_t readAll(int fd, char* buf, size_t count){
+	ssize_t brt;
+	ssize_t br;
+
+	brt = 0;
+	br = 0;
+	while (brt < count) {
+		br = read(fd, buf + brt, count - brt);
+		if (br < 0) {
+			perror("write");
+			return -1;
+		}
+
+		if (br == 0)
+			break;
+		
+		brt += br;
+	}
+
+	return (brt == count) ? brt : -1;
+}
+
+/*
+ * Splits the content pointed by str (which is null terminated)
+ * each time the character sep is encountered.
+ * Returns an array of strings that were in between the separators on success,
+ * NULL on error.
+ */
+char** split_on_sep(char* str, char sep){
+	int i;
+	int j;
+	int len;
+	int sep_count;
+	int marker;
+	char** strs;
+
+	if (str == NULL)
+		return NULL;
+
+	len = strlen(str);
+	sep_count = 0;
+	marker = 0;
+	j = 0;
+
+	for (i = 0; i < len; i++) {
+		if (str[i] == sep)
+			sep_count += 1;
+	}
+
+	if (sep_count != 3) {
+		fprintf(stderr, "Wrong file format\n");
+		return NULL;
+	}
+
+	strs = malloc(sep_count);
+	if (strs == NULL) {
+		perror("malloc");
+		return NULL;
+	}
+
+	for (i = 0; i < len; i++) {
+		if (str[i] == sep) {
+			strs[j] = malloc(i - marker + 1);
+			if (strs[j] == NULL) {
+				perror("malloc");
+				goto error;
+			}
+
+			strncpy(strs[j], str + marker, i - marker);
+			strs[j][i - marker] = '\0';
+
+			j += 1;
+			marker = i + 1;
+		}
+	}
+
+	return strs;
+
+ error:
+	for (i = 0; i < sep_count; i++) {
+		free(strs[i]);
+	}
+	free(strs);
+	return NULL;
+}
+
+/*
+ * Ensures that the buffer **BUF that points to *N bytes of memory has enough
+ * space to add *TO_ADD bytes of data. If not, it reallocs memory in order to do
+ * so. Returns 0 on success, -1 on error.
+ */
+int ensure_capacity(char** buf, int* len, int* size, int len_add){
+	int needed;
+
+	needed = *len + len_add + 1;
+
+	if (needed > *size) {
+		if (needed < 2 * *size)
+			needed = 2 * *size;
+
+		*buf = realloc(*buf, needed);
+		if (*buf == NULL)
+			return -1;
+
+		*size = needed;
+	}
+
+	return 0;
+}
+
+/*
+ * Concats the content of data to buf and updates len and size as needed.
+ * data must be NULL-terminated.
+ * Returns 0 on success, -1 on error.
+ */
+int add_bytes_to_buf(char** buf, int* len, int* size, char* data){
+	int len_data;
+
+	if (data == NULL)
+		return -1;
+
+	len_data = strlen(data);
+	
+	if (ensure_capacity(buf, len, size, len_data) < 0) {
+		fprintf(stderr, "Failed to add bytes to buffer\n");
+		return -1;
+	}
+
+	strcpy(*buf + *len, data);
+
+	*len += len_data;
+
+	return 0;
+}

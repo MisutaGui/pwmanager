@@ -50,4 +50,17 @@ int delete_account(char* label, char* path);
  */
 int store_account(account* to_store, char* path);
 
+/*
+ * Reads an account from the file represented by the opened file descriptor
+ * passed as an argument.
+ * Returns a pointer to the account, NULL on error.
+ */
+account* get_account_from_file(int fd, char* label);
+
+/*
+ * Displays the password associated to the given label.
+ * Returns -1 on error, 0 otherwise.
+ */
+int display_pwd_account(char* label, char* path);
+
 #endif /* ACCOUNT_H */
