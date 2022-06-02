@@ -258,11 +258,13 @@ account* get_account_from_file(int fd, char* label){
 		goto error;
 	}
 
-	content = malloc(file_len);
+	content = malloc(file_len + 1);
 	if (content == NULL) {
 		perror("malloc");
 		goto error;
 	}
+
+	memset(content, '\0', file_len + 1);
 
 	if (readAll(fd, content, file_len) < 0)
 		goto error;
@@ -369,6 +371,68 @@ int display_pwd_account(char* label, char* path){
 		goto error;
 
 	printf("password : %s\n", acc->pwd->pwd_s);
+
+	if (close(fd) < 0) {
+		perror("close");
+		goto error;
+	}
+
+	free(filepath);
+	free_account(acc);
+
+	return 0;
+
+ error:
+	free(filepath);
+	free_account(acc);
+	close(fd);
+	return -1;
+}
+
+/*
+ * Fetchs the account with the given label and displays the username and the 
+ * email associated.
+ * Returns 0 on success, -1 on error.
+ */
+int get_account_info(char* label, char* path){
+	int b;
+	int fd;
+	char* tmp;
+	char* filepath;
+	account* acc;
+
+	if (label == NULL || path == NULL)
+		goto error;
+
+	b = check_label_existence(label, path);
+	if (b < 0)
+		goto error;
+
+	if (!b) {
+		printf("No account associated to provided label\n");
+		return 0;
+	}
+	
+	tmp = concat_strings("/", label);
+	if (tmp == NULL)
+		goto error;
+
+	filepath = concat_strings(path, tmp);
+	free(tmp);
+	if (filepath == NULL)
+		goto error;
+
+	fd = open(filepath, O_RDONLY);
+	if (fd < 0)
+		goto error;
+
+	acc = get_account_from_file(fd, label);
+
+	if (acc == NULL)
+		goto error;
+
+	printf("username : %s\n", acc->username);
+	printf("email    : %s\n", acc->email);
 
 	if (close(fd) < 0) {
 		perror("close");

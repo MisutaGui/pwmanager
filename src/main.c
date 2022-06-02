@@ -127,7 +127,10 @@ int main(int argc, char **argv){
 		}
 		break;
 	case INFO_OPECODE:
-		fprintf(stderr, "TODO\n");
+		if (get_account_info(label, path) < 0) {
+			fprintf(stderr, "Failed to fetch information\n");
+			goto error;
+		}
 		break;
 	case CREA_OPECODE:
 		if (register_account(label, username, email, path) < 0) {

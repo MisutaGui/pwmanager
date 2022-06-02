@@ -114,8 +114,6 @@ int list_accounts(char* path){
 	}
 
 	errno = 0;
-	
-	printf("Your accounts : \n");
 
 	while ((entry = readdir(dir)) != NULL) {
 		name = entry->d_name;
@@ -243,10 +241,13 @@ char** split_on_sep(char* str, char sep){
 	int marker;
 	char** strs;
 
+	strs = NULL;
+
 	if (str == NULL)
 		return NULL;
 
 	len = strlen(str);
+
 	sep_count = 0;
 	marker = 0;
 	j = 0;
@@ -261,7 +262,7 @@ char** split_on_sep(char* str, char sep){
 		return NULL;
 	}
 
-	strs = malloc(sep_count);
+	strs = malloc(sep_count * sizeof (char*));
 	if (strs == NULL) {
 		perror("malloc");
 		return NULL;
@@ -300,17 +301,20 @@ char** split_on_sep(char* str, char sep){
  */
 int ensure_capacity(char** buf, int* len, int* size, int len_add){
 	int needed;
+	char *tmp;
 
+	tmp = NULL;
 	needed = *len + len_add + 1;
 
 	if (needed > *size) {
 		if (needed < 2 * *size)
 			needed = 2 * *size;
 
-		*buf = realloc(*buf, needed);
-		if (*buf == NULL)
+		tmp = realloc(*buf, needed);
+		if (tmp == NULL)
 			return -1;
 
+		*buf = tmp;
 		*size = needed;
 	}
 

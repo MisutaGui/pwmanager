@@ -63,4 +63,11 @@ account* get_account_from_file(int fd, char* label);
  */
 int display_pwd_account(char* label, char* path);
 
+/*
+ * Fetchs the account with the given label and displays the username and the 
+ * email associated.
+ * Returns 0 on success, -1 on error.
+ */
+int get_account_info(char* label, char* path);
+
 #endif /* ACCOUNT_H */
