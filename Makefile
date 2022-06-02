@@ -17,4 +17,6 @@ pwman: $(OBJECTS)
 clean:
 	find . -name "*~" -delete
 	find . -name "*.o" -delete
+
+mrpropper: clean
 	rm pwman

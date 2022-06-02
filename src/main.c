@@ -6,18 +6,19 @@
 #include "account.h"
 
 const char usage[] = "\
-Usage: pwman -l       -> list all labels\n\
-   or: pwman          -> same\n\
-   or: pwman -d LABEL -> deletes the account labeled LABEL\n\
-   or: pwman -i LABEL -> Asks for all information (except the password) about\n\
-                         the account with the label LABEL\n\
-   or: pwman -g LABEL -> Displays the password on standard output of the\n\
-                         account labeled LABEL\n\
-   or: pwman -c LABEL [-u USERNAME] [-e EMAIL]\n\
-                      -> Creates a new account labeled LABEL. If no \n\
-                         value for USERNAME and EMAIL is provided, a default\n\
-                         value will be stored\n\
-   or: pwman -h       -> displays this message\n\
+Usage: \n\
+    pwman -l       -> Lists all labels\n\
+    pwman          -> Same\n\
+    pwman -d LABEL -> Deletes the account labeled LABEL. This is final\n\
+    pwman -i LABEL -> Asks for all information (except the password) about\n\
+                      the account labeled LABEL\n\
+    pwman -g LABEL -> Displays the password (on standard output) of the\n\
+                      account labeled LABEL\n\
+    pwman -c LABEL [-u USERNAME] [-e EMAIL]\n\
+                   -> Creates a new account labeled LABEL. If no \n\
+                      value for USERNAME and EMAIL is provided, a default\n\
+                      value will be stored\n\
+    pwman -h       -> Displays this message\n\
 ";
 
 int main(int argc, char **argv){
