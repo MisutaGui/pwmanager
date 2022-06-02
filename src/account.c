@@ -4,8 +4,9 @@
  * Allocates a new account with the given label, username and email
  * Returns a pointer to the new account or NULL on error.
  */
-account* create_account(char* label, char* username, char* email){
-	account*  new_acc;
+account*
+create_account(char* label, char* username, char* email){
+	account* new_acc;
 
 	if (check_label_validity(label) != 0
 		|| check_username_validity(username) != 0
@@ -30,9 +31,9 @@ account* create_account(char* label, char* username, char* email){
 	if (get_password(new_acc->pwd) < 0)
 		return NULL;
 
-	new_acc->label = malloc(LABEL_MAX_LEN + 1);
+	new_acc->label    = malloc(LABEL_MAX_LEN + 1);
 	new_acc->username = malloc(USERNAME_MAX_LEN + 1);
-	new_acc->email = malloc(EMAIL_MAX_LEN + 1);
+	new_acc->email    = malloc(EMAIL_MAX_LEN + 1);
 
 	if (new_acc->label == NULL
 		|| new_acc->username == NULL
@@ -53,7 +54,8 @@ account* create_account(char* label, char* username, char* email){
 /*
  * Frees all allocated memory to the given account pointer.
  */
-void free_account(account* acc){
+void
+free_account(account* acc){
 	free(acc->label);
 	free(acc->username);
 	free(acc->email);
@@ -68,9 +70,10 @@ void free_account(account* acc){
  * Returns -1 on error, 0 if an account with the given label already exists and
  * 1 if the account was succesfully created.
  */
-int register_account(char* label, char* username, char* email, char* path){
+int
+register_account(char* label, char* username, char* email, char* path){
+	int      b;
 	account* to_store;
-	int b;
 
 	if (path == NULL)
 		return -1;
@@ -95,10 +98,11 @@ int register_account(char* label, char* username, char* email, char* path){
  * Deletes the file associated to the given label in path.
  * Returns -1 on error, 0 otherwise
  */
-int delete_account(char* label, char* path){
+int
+delete_account(char* label, char* path){
+	int   bool;
 	char* tmp;
 	char* filepath;
-	int bool;
 
 	if (label == NULL || path == NULL)
 		return -1;
@@ -133,15 +137,16 @@ int delete_account(char* label, char* path){
  * The name of the filepath is the label of the account.
  * Returns 1 on success, -1 on error.
  */
-int store_account(account* to_store, char* path){
-	int fd;
-	int size;
-	int len;
+int
+store_account(account* to_store, char* path){
+	int    fd;
+	int    size;
+	int    len;
 	mode_t mode;
-	char* tmp;
-	char* filepath;
-	char* encrypted_password;
-	char* content_to_store;
+	char*  tmp;
+	char*  filepath;
+	char*  encrypted_password;
+	char*  content_to_store;
 
 	if (path == NULL || to_store == NULL)
 		goto error;
@@ -156,16 +161,15 @@ int store_account(account* to_store, char* path){
 		goto error;
 
 	mode = 0600;
-
-	fd = open(filepath, O_CREAT | O_TRUNC | O_WRONLY, mode);
+	fd   = open(filepath, O_CREAT | O_TRUNC | O_WRONLY, mode);
 	free(filepath);
 	if (fd < 0) {
 		perror("open");
 		goto error;
 	}
 
-	size = 10;
-	len = 0;
+	size             = 10;
+	len              = 0;
 	content_to_store = malloc(size);
 	if (content_to_store == NULL) {
 		perror("malloc");
@@ -177,6 +181,7 @@ int store_account(account* to_store, char* path){
 	tmp = concat_strings(to_store->username, "\n");
 	if (tmp == NULL)
 		goto error;
+
 	if (add_bytes_to_buf(&content_to_store, &len, &size, tmp) < 0)
 		goto error;
 
@@ -185,6 +190,7 @@ int store_account(account* to_store, char* path){
 	tmp = concat_strings(to_store->email, "\n");
 	if (tmp == NULL)
 		goto error;
+
 	if (add_bytes_to_buf(&content_to_store, &len, &size, tmp) < 0)
 		goto error;
 
@@ -197,6 +203,7 @@ int store_account(account* to_store, char* path){
 	tmp = concat_strings(encrypted_password, "\n");
 	if (tmp == NULL)
 		goto error;
+
 	if (add_bytes_to_buf(&content_to_store, &len, &size, tmp) < 0)
 		goto error;
 
@@ -212,8 +219,6 @@ int store_account(account* to_store, char* path){
 		perror("close");
 		goto error;
 	}
-
-	printf("Account succesfully stored\n");
 
 	return 1;
 
@@ -233,16 +238,17 @@ int store_account(account* to_store, char* path){
  * passed as an argument.
  * Returns a pointer to the account, NULL on error.
  */
-account* get_account_from_file(int fd, char* label){
-	int i;
-	off_t file_len;
-	char* content;
-	char** elems;
+account*
+get_account_from_file(int fd, char* label){
+	int      i;
+	off_t    file_len;
+	char*    content;
+	char**   elems;
 	account* acc;
 
 	content = NULL;
-	elems = NULL;
-	acc = NULL;
+	elems   = NULL;
+	acc     = NULL;
 
 	if (fd < 0 || label == NULL)
 		goto error;
@@ -333,11 +339,12 @@ account* get_account_from_file(int fd, char* label){
  * Displays the password associated to the given label.
  * Returns -1 on error, 0 otherwise.
  */
-int display_pwd_account(char* label, char* path){
-	int b;
-	int fd;
-	char* tmp;
-	char* filepath;
+int
+display_pwd_account(char* label, char* path){
+	int      b;
+	int      fd;
+	char*    tmp;
+	char*    filepath;
 	account* acc;
 
 	if (label == NULL || path == NULL)
@@ -394,11 +401,12 @@ int display_pwd_account(char* label, char* path){
  * email associated.
  * Returns 0 on success, -1 on error.
  */
-int get_account_info(char* label, char* path){
-	int b;
-	int fd;
-	char* tmp;
-	char* filepath;
+int
+get_account_info(char* label, char* path){
+	int      b;
+	int      fd;
+	char*    tmp;
+	char*    filepath;
 	account* acc;
 
 	if (label == NULL || path == NULL)

@@ -26,7 +26,8 @@
  * A username is less than 50 characters long.
  * Returns 0 on success, -1 on error.
  */
-int check_username_validity(char* username);
+int
+check_username_validity(char* username);
 
 /*
  * Checks that the given email is of the right format.
@@ -34,14 +35,16 @@ int check_username_validity(char* username);
  * characters long.
  * Returns 0 on success, -1 on error.
  */
-int check_email_validity(char* email);
+int
+check_email_validity(char* email);
 
 /*
  * Returns 0 if all the characters of the given string is a mix 
  * of letters, capitalized or not, and numbers.
  * Returns -1 otherwise.
  */
-int is_alphanumeric(char* string);
+int
+is_alphanumeric(char* string);
 
 /*
  * Checks that the given label is of the right format.
@@ -49,43 +52,50 @@ int is_alphanumeric(char* string);
  * alphanumeric.
  * Returns 0 on success, -1 on error.
  */
-int check_label_validity(char* label);
+int
+check_label_validity(char* label);
 
 /*
  * Concatenates str1 with str2 in a newly allocated buffer and returns it.
  * Returns NULL on error.
  */
-char* concat_strings(char* str1, char* str2);
+char*
+concat_strings(char* str1, char* str2);
 
 /* 
  * Lists the label of all accounts.
  * Returns 0 on succress, -1 on error.
  */
-int list_accounts(char* path);
+int
+list_accounts(char* path);
 
 /*
  * Checks that the given label is an entry of the directory specified in path.
  * Returns 1 if it exists, 0 it if does not, -1 on error.
  */
-int check_label_existence(char* label, char* path);
+int
+check_label_existence(char* label, char* path);
 
 /*
  * Writes count bytes of buf in the file descriptor fd.
  * Returns -1 on error, the number of bytes written otherwise.
  */
-ssize_t writeAll(int fd, char* buf, size_t count);
+ssize_t
+writeAll(int fd, char* buf, size_t count);
 
 /*
  * Reads count bytes from fd and stores them in buf.
  * Returns -1 on error, the number of bytes read otherwise.
  */
-ssize_t readAll(int fd, char* buf, size_t count);
+ssize_t
+readAll(int fd, char* buf, size_t count);
 
 /*
  * Writes the separator s in the opened file descriptor fd.
  * Retunrs 0 on success, -1 on error.
  */
-int write_sep(int fd, char s);
+int
+write_sep(int fd, char s);
 
 /*
  * Splits the content pointed by str (which is null terminated)
@@ -93,20 +103,23 @@ int write_sep(int fd, char s);
  * Returns an array of strings that were in between the separators on success,
  * NULL on error.
  */
-char** split_on_sep(char* str, char sep);
+char**
+split_on_sep(char* str, char sep);
 
 /*
  * Ensures that the buffer **BUF that points to *N bytes of memory has enough
  * space to add *TO_ADD bytes of data. If not, it reallocs memory in order to do
  * so. Returns 0 on success, -1 on error.
  */
-int ensure_capacity(char** buf, int* len, int* size, int len_add);
+int
+ensure_capacity(char** buf, int* len, int* size, int len_add);
 
 /*
  * Concats the content of data to buf and updates len and size as needed.
  * data must be NULL-terminated.
  * Returns 0 on success, -1 on error.
  */
-int add_bytes_to_buf(char** buf, int* len, int* size, char* data);
+int
+add_bytes_to_buf(char** buf, int* len, int* size, char* data);
 
 #endif /* UTILS_H */

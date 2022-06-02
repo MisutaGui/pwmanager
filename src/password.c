@@ -3,7 +3,8 @@
 /*
  * Frees all the memory allocated to the given password pointer.
  */
-void free_password(password* pwd){
+void
+free_password(password* pwd){
 	free(pwd->pwd_s);
 	free(pwd);
 }
@@ -13,8 +14,9 @@ void free_password(password* pwd){
  * with characters from the ASCII range [33, 126].
  * Returns 0 on success, -1 on error.
  */
-int get_password(password* pwd){
-	int   i;
+int
+get_password(password* pwd){
+	int i;
 
 	if (pwd == NULL)
 		return -1;
@@ -40,7 +42,8 @@ int get_password(password* pwd){
  * in pwd.
  * Returns NULL on error.
  */
-char* get_encrypted_password(password* pwd){
+char*
+get_encrypted_password(password* pwd){
 	char* enc_pwd;
 
 	if (pwd == NULL)
